@@ -413,8 +413,10 @@ float shadow(vec3 pos, float alpha, vec3 light, float seed) {
     const int steps = 10;
     float stepJitter = rand(pos.xy + vec2(seed, seed * seed)) * 1.0;
 
+    vec3 step;
+
     for (int i=0; i < steps; ++i) {
-        vec3 step = mix(pos, light, i / float(steps) * stepJitter);
+        step = mix(pos, light, float(i) / float(steps) * stepJitter);
 
         float jitter = rand(step.xy + pos.xy) * (step.z * 0.005);
         step.x += jitter;
@@ -474,7 +476,7 @@ void main()
     }
 
     vec3 light = ambientLight;
-    for (int i=0; i < lightCount; ++i) {
+    for (int i=0; i < int(lightCount); ++i) {
         mat4 lightData = lights[i];
         vec3 lPos = vec3(lightData[0][0], lightData[1][0], lightData[2][0]);
         vec3 lColor = vec3(lightData[0][1], lightData[1][1], lightData[2][1]);
@@ -487,11 +489,11 @@ void main()
         float w = 2.0 / imageSize.x;
         float h = 2.0 / imageSize.y;
 
-        float strength = 1.0;
-        strength *= shadow(pos, alpha, mouse, 0);
-        strength *= shadow(pos, alpha, mouse + vec3(w, 0.0, 0.0), 1);
-        strength *= shadow(pos, alpha, mouse + vec3(0.0, h, 0.0), 2);
-        strength *= shadow(pos, alpha, mouse + vec3(w, h, 0.0), 3);
+        float strength;
+        strength *= shadow(pos, alpha, mouse, 0.0);
+        strength *= shadow(pos, alpha, mouse + vec3(w, 0.0, 0.0), 1.0);
+        strength *= shadow(pos, alpha, mouse + vec3(0.0, h, 0.0), 2.0);
+        strength *= shadow(pos, alpha, mouse + vec3(w, h, 0.0), 3.0);
         color.rgb *= strength;
     }
 
