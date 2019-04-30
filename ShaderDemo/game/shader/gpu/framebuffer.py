@@ -50,7 +50,7 @@ class FrameBuffer:
 
     def createFrameBuffer(self, texture, depthBuffer):
         bufferId = (gl.GLuint * 1)()
-        gl.glGenFramebuffers(1, bufferId);
+        gl.glGenFramebuffers(1, bufferId)
         gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, bufferId[0])
         gl.glFramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_TEXTURE_2D, texture, 0)
         if depthBuffer:

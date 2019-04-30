@@ -13,9 +13,9 @@ def quadOut(pos):
 def quadInOut(pos):
     pos /= 0.5
     if pos < 1:
-        return 0.5 * pow(pos, 2);
+        return 0.5 * pow(pos, 2)
     pos -= 2
-    return -0.5 * (pos * pos - 2);
+    return -0.5 * (pos * pos - 2)
 
 def sineIn(pos):
     return -math.cos(pos * (math.pi / 2)) + 1
