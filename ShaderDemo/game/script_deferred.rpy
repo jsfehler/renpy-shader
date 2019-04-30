@@ -1,8 +1,8 @@
-
 init python:
     import math
     import shader
     from shader import euclid
+
 
     def placeSprite(name, x, y, scale=1.0):
         imageWidth = 467 #Hardcoded image size, it would be better to look this up during runtime
@@ -11,14 +11,15 @@ init python:
         height = (imageHeight / float(config.screen_height)) * scale
         return (x, x + width, y, y + height)
 
+
     def setUniforms(context, lights):
         lightData = []
         for light in lights:
             l = light.copy()
             if l["behavior"]:
-                l = l["behavior"](context, l) #Callback behavior function
-            #Pass light data to pixel shader in a 4x4 matrix. Some fields
-            #are unused, but this leaves room for additions.
+                l = l["behavior"](context, l)  # Callback behavior function
+            # Pass light data to pixel shader in a 4x4 matrix. Some fields
+            # are unused, but this leaves room for additions.
             m = euclid.Matrix4()
             m.a, m.b, m.c = l["position"]
             m.e, m.f, m.g = l["color"]
@@ -36,7 +37,7 @@ init python:
 
     def getMousePos(context):
         pos = context.mousePos
-        #Normalize mouse position to 0.0 - 1.0 range
+        # Normalize mouse position to 0.0 - 1.0 range
         return (pos[0] / float(context.width), pos[1] /  float(context.height))
 
     def createMouseLight(context):

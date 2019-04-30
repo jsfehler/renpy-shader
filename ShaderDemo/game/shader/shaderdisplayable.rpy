@@ -1,20 +1,23 @@
-
 init python:
     import time
     import pygame
     import shader
     from OpenGL import GL as gl
 
+
     if persistent.shader_effects_enabled is None:
         persistent.shader_effects_enabled = True
 
+
     def _interactCallback():
         shader._controllerContextStore.checkDisplayableVisibility(ShaderDisplayable)
+
 
     def _initContextCallbacks():
         shader._setupRenpyHooks()
         if not _interactCallback in renpy.config.interact_callbacks:
             renpy.config.interact_callbacks.append(_interactCallback)
+
 
     class ShaderDisplayable(renpy.Displayable):
         def __init__(self, mode, image, vertexShader, pixelShader, textures=None, uniforms=None, create=None, update=None, args=None, **properties):
@@ -116,7 +119,7 @@ init python:
 
                     renderWidth, renderHeight = controller.getSize()
                     result = renpy.Render(renderWidth, renderHeight)
-                    canvas = result.canvas() #TODO Slow, allocates one surface every time...
+                    canvas = result.canvas()  # TODO Slow, allocates one surface every time...
                     surface = canvas.get_surface()
 
                     uniforms = {
@@ -161,7 +164,7 @@ init python:
                         renpy.redraw(self, 1.0 / shader.config.fps)
 
             if not result:
-                #Original image
+                # Original image
                 result = renpy.render(self.image, width, height, st, at)
 
             return result
@@ -175,10 +178,10 @@ init python:
         def event(self, ev, x, y, st):
             self.events.append((ev, (x, y)))
             while len(self.events) > 100:
-                #Too many, remove oldest
+                # Too many, remove oldest
                 self.events.pop(0)
 
-            if ev.type == pygame.MOUSEMOTION or ev.type == pygame.MOUSEBUTTONDOWN or ev.type == pygame.MOUSEBUTTONUP:
+            if ev.type in [pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP]:
                 self.getContext().mousePos = (x, y)
 
         def visit(self):
