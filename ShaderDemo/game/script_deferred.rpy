@@ -96,113 +96,30 @@ init python:
         return light
 
     def rgb(r, g, b):
-        #Use a dict and scale value to range 0 - 100 so we can use RenPy screen variable value handlers (DictValue etc.)
-        #Otherwise we could easily just use 3-item tuples with values from 0.0 to 1.0
+        """Use a dict and scale value to range 0 - 100 so we can use RenPy
+        screen variable value handlers (DictValue etc.)
+
+        Otherwise we could easily just use 3-item tuples with values from 0.0 to 1.0
+
+        Returns:
+            dict
+        """
         return {"red": r * 100, "green": g * 100, "blue": b * 100, "strength": 500}
 
     def rawColor(rgb):
-        #Convert a color dict created by color() into a normalized 3-tuple
+        """Convert a color dict created by color() into a normalized 3-tuple."""
         s = rgb["strength"] / 500.0
         return (rgb["red"] / 100.0 * s, rgb["green"] / 100.0 * s, rgb["blue"] / 100.0 * s)
 
     def addNewLight():
         lights.append(createInteractiveLight())
 
-    addLightX = 500 #From 0 to 1000
+    addLightX = 500 # From 0 to 1000
     addLightY = 500
     addLightZOffset = 200
     addLightColor = rgb(1, 1, 1)
     addLightInteractive = False
 
-screen setColorScreen(colorDict):
-    frame:
-        xalign 0.5
-        yalign 0.5
-        xpadding 10
-        ypadding 10
-
-        vbox:
-            xmaximum 400
-            ymaximum 400
-            spacing 5
-            hbox:
-                textbutton "Red:" xsize 150
-                bar value DictValue(colorDict, "red", 100)
-            hbox:
-                textbutton "Green:" xsize 150
-                bar value DictValue(colorDict, "green", 100)
-            hbox:
-                textbutton "Blue:" xsize 150
-                bar value DictValue(colorDict, "blue", 100)
-            hbox:
-                textbutton "Strength:" xsize 150
-                bar value DictValue(colorDict, "strength", 1000)
-            hbox:
-                textbutton "Back" action Hide("setColorScreen")
-
-screen addLightScreen():
-    on "show" action SetVariable("addLightInteractive", True)
-    on "hide" action SetVariable("addLightInteractive", False)
-
-    frame:
-        yalign 1.0
-        xpadding 10
-        ypadding 10
-        $ textWidth = 250
-        vbox:
-            spacing 2
-            hbox:
-                textbutton "Light x-position:" xsize textWidth
-                bar value VariableValue("addLightX", 1000)
-            hbox:
-                textbutton "Light y-position:" xsize textWidth
-                bar value VariableValue("addLightY", 1000)
-            hbox:
-                textbutton "Light z-offset:" xsize textWidth
-                bar value VariableValue("addLightZOffset", 1000)
-            hbox:
-                textbutton "Light color" action Show("setColorScreen", None, addLightColor)
-            hbox:
-                textbutton "Add light" action [Function(addNewLight), Hide("addLightScreen")]
-                textbutton "|"
-                textbutton "Cancel" action Hide("addLightScreen")
-
-screen deferredEditorScreen():
-    frame:
-        xpadding 10
-        ypadding 10
-        hbox:
-            textbutton "Exit" action Return("")
-            textbutton "|"
-            vbox:
-                textbutton "Mouse light" action ToggleVariable("mouseLight")
-                if mouseLight:
-                    textbutton "Light color" action Show("setColorScreen", None, mouseLightColor)
-            textbutton "|"
-            vbox:
-                textbutton "Mouse sun" action ToggleVariable("mouseSun")
-                if mouseSun:
-                    textbutton "Sun color" action Show("setColorScreen", None, mouseSunColor)
-            textbutton "|"
-            textbutton "Ambient" action Show("setColorScreen", None, ambientLight)
-            textbutton "|"
-            textbutton "Add light" action Show("addLightScreen")
-            textbutton "|"
-            vbox:
-                textbutton "DOF"
-                bar value VariableValue("depthOfField", 100) xsize 100
-            textbutton "|"
-            vbox:
-                textbutton "Shadow"
-                bar value VariableValue("shadowStrength", 100) xsize 100
-            textbutton "|"
-            vbox:
-                textbutton "Fog" action Show("setColorScreen", None, fogColor)
-                bar value VariableValue("fogStart", 100) xsize 100
-            if fogStart < 100:
-                vbox:
-                    textbutton ""
-                    textbutton "Rain" action ToggleVariable("fogRainEnabled")
 
 image room_normals = "room normal"
 image room_depth = "room depth"

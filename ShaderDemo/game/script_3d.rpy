@@ -1,6 +1,4 @@
-
-#Generic screen for showing 3d-content.
-
+# Generic screen for showing 3d-content.
 screen shaderScreen3d(name, create=None, update=None, uniforms={}, pixelShader=shader.PS_3D_BAKED):
     modal False
     add ShaderDisplayable(shader.MODE_3D, name, shader.VS_3D, pixelShader, None, uniforms, create, update):

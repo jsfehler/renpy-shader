@@ -1,4 +1,3 @@
-
 init python:
     import math
     import shader

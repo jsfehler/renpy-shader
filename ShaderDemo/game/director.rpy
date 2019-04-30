@@ -1,4 +1,3 @@
-
 init python:
     import shader
 
@@ -32,6 +31,7 @@ init python:
             renpy.with_statement(fade)
             return CallChain
 
+
     def rig(image, update=None, xalign=0.5, yalign=1.0, layer=None):
         rigFile = image + ".rig"
         path = shader.utils.findFile(rigFile)
@@ -44,11 +44,12 @@ init python:
         renpy.show_screen("rigScreen", image, shader.PS_SKINNED,
             update=update, args={"rigFile": path}, xalign=xalign, yalign=yalign,
             _tag=getImageBase(image), _layer=active)
-        renpy.show_layer_at([], layer=active) #Stop any animations
+        renpy.show_layer_at([], layer=active)  # Stop any animations
         return CallChain
 
+
     def show(image, pixelShader=shader.PS_WIND_2D, uniforms={}, update=None, xalign=0.5, yalign=0.1, layer=None, textures=None):
-        #TODO use **kwargs and pass them to show_screen...
+        # TODO use **kwargs and pass them to show_screen...
         active = findLayer(image, layer)
 
         if textures:
@@ -58,13 +59,13 @@ init python:
 
         influence = image + " influence"
         if renpy.has_image(influence, exact=True):
-            #Has an influence image
+            # Has an influence image
             textures["tex1"] = influence
         else:
-            #No influence image for this image, so use all black zero influence image.
+            # No influence image for this image, so use all black zero influence image.
             textures["tex1"] = shader.ZERO_INFLUENCE
 
-        #Hide the old one (if any) so animation times are reset. This might not be desirable in all cases.
+        # Hide the old one (if any) so animation times are reset. This might not be desirable in all cases.
         hide(image, layer=active)
 
         renpy.show_screen("shaderScreen", image, pixelShader, textures,
@@ -72,6 +73,7 @@ init python:
             _tag=getImageBase(image), _layer=active)
         renpy.show_layer_at([], layer=active) #Stop any animations
         return CallChain
+
 
     def deferred(name, update=None, sprite=None):
         textures = {
@@ -84,9 +86,11 @@ init python:
         return show(name, pixelShader=shader.PS_DEFERRED, update=update,
             textures=textures, xalign=0.5, yalign=0.5)
 
+
     def hide(image, layer=None):
         renpy.hide_screen(getImageBase(image), layer=findLayer(image, layer))
         return CallChain
+
 
     def warp(image, xalign=0.5, yalign=0.1, layer=None):
         layer = findLayer(image, layer)
@@ -94,11 +98,13 @@ init python:
         show(image, xalign=xalign, yalign=yalign, layer=layer).dissolve()
         return CallChain
 
+
     def scene(image=None):
         config.scene()
         if image:
             show(image)
         return CallChain
+
 
     CallChain.show = staticmethod(show)
     CallChain.deferred = staticmethod(deferred)

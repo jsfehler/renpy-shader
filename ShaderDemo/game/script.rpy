@@ -1,4 +1,3 @@
-﻿
 image amy = "amy.png"
 image eileen = "eileen.png"
 image sky = "sky.jpg"
@@ -96,17 +95,6 @@ init python:
 #but keeps burning memory and resources.
 define config.scene = clearScene
 
-#Generic screen for showing 2d-images. In some cases it might be wise
-#to create more specific screens which know the images and
-#parameters they want to use instead of passing them all in every time you
-#want to show the screen. Also remember the screen "tag"-attribute, it can come in handy.
-
-screen shaderScreen(name, pixelShader, textures={}, uniforms={}, update=None, xalign=0.5, yalign=0.1):
-    modal False
-    add ShaderDisplayable(shader.MODE_2D, name, shader.VS_2D, pixelShader, textures, uniforms, None, update):
-        xalign xalign
-        yalign yalign
-
 label start:
 
     $ cameraDrive = False
@@ -168,14 +156,14 @@ label start:
 
     a "I'm now going to hide this text box, so you can see the effect on my skirt better. Ready?"
 
-    #Hide the normal sprite Amy...
+    # Hide the normal sprite Amy...
     hide amy
 
-    #...And replace her with the shader version.
-    #We could use the shader version all the time, but I wanted to make
-    #sure user has read previous lines in case the app crashes here.
-    #You could also use normal "show screen YYY(...)" statements.
-    #For example the next line...
+    # ...And replace her with the shader version.
+    # We could use the shader version all the time, but I wanted to make
+    # sure user has read previous lines in case the app crashes here.
+    # You could also use normal "show screen YYY(...)" statements.
+    # For example the next line...
 
     $ show("amy", update=animateEyesAndMouth).dissolve()
 
@@ -184,17 +172,18 @@ label start:
         #show screen shaderScreen("amy", shader.PS_WIND_2D, {"tex1": "amy influence"}, _tag="amy", _layer="amy")
         #with dissolve
 
-    #One thing to keep in mind is that show() and other Python calls will create shader versions of the images and
-    #if those images don't have any influence maps the result will be visually identical to a
-    #normal sprite image, but they will consume much more memory and processing power. So it is
-    #recommended to use normal RenPy statements with normal images.
+    # One thing to keep in mind is that show() and other Python calls will
+    # create shader versions of the images and if those images don't have any
+    # influence maps the result will be visually identical to a normal sprite
+    # image, but they will consume much more memory and processing power.
+    # So it is recommended to use normal RenPy statements with normal images.
 
-    #One of the disadvantages of using Python to do this is that we lose RenPy screen prediction.
-    #This can affect image loading performance. You can manully give hints
-    #by using:
+    # One of the disadvantages of using Python to do this is that we lose RenPy screen prediction.
+    # This can affect image loading performance. You can manully give hints
+    # by using:
     #   -renpy.start_predict_screen() and renpy.stop_predict_screen()
     #   -renpy.predict() and renpy.stop_predict()
-    #if you think those help.
+    # if you think those help.
 
     window hide
     pause 5
@@ -332,7 +321,7 @@ label start:
     a "At the moment, the background is a normal, static image."
     a "In the next step, the background will be replaced with a blurred version."
 
-    #Show this screen in "bottom"-layer so it will always below other sprites.
+    # Show this screen in "bottom"-layer so it will always below other sprites.
     hide room
     $ show("room", pixelShader=shader.PS_BLUR_2D, update=animateBlurSize, layer="bottom")
 
@@ -340,16 +329,16 @@ label start:
     a "Now the background is being blurred and I'm still being affected by the wind effect."
     a "Seen enough? I'm going to disable the blurring now, it is a pretty resource intensive operation at the moment."
 
-    #Hide the blurring screen and show the basic image version.
-    #Be careful that you properly hide shader images you don't want to use anymore instead of just placing
-    #other images on top of them, forcing them to be rendered even thought they are not visible to the user.
+    # Hide the blurring screen and show the basic image version.
+    # Be careful that you properly hide shader images you don't want to use anymore instead of just placing
+    # other images on top of them, forcing them to be rendered even thought they are not visible to the user.
     $ hide("room", layer="bottom")
     show room
 
     a "There! I can already feel the graphics card sigh in relief."
     a "At the moment, I'm on a custom layer. This means we can also animate me using RenPy transforms without affecting others. Ready?"
 
-    #We need to animate the whole layer. A bit clumsy, but this is one limitation we currently have.
+    # We need to animate the whole layer. A bit clumsy, but this is one limitation we currently have.
     show layer amy:
         default
         ease 1.0 xpos 0.25
@@ -370,10 +359,10 @@ label start:
 
     $ hide("amy").dissolve()
 
-    #Create the 3D room screen and put it in the "middle"-layer.
-    #Use the the normal RenPy "show screen"-statement here for a change. We could also
-    #use our Python helper functions for the 3D stuff, but in the end
-    #they just make things shorter and easier to read, they are not black magic.
+    # Create the 3D room screen and put it in the "middle"-layer.
+    # Use the the normal RenPy "show screen"-statement here for a change. We could also
+    # use our Python helper functions for the 3D stuff, but in the end
+    # they just make things shorter and easier to read, they are not black magic.
     show screen shaderScreen3d("room", create3dRoomScene, update3dRoomScene, _layer="middle")
     show sky
     with dissolve
@@ -383,7 +372,7 @@ label start:
     # The rollback can sometimes behave a bit strangely with complex 3D-stuff.
     $ cameraDrive = True
 
-    #Ugly and fake looking sky movement. A real 3D skybox would be better.
+    # Ugly and fake looking sky movement. A real 3D skybox would be better.
     show sky:
         default
         xanchor 0.5
@@ -405,10 +394,10 @@ label start:
     a "If you ever wanted or needed to use 3D with RenPy, now you can."
     a "We can also render 3D-objects into the scene between layers. Like this!"
 
-    #Create a cube into the middle layer. Visualize it's vertex normals instead of any other shading.
+    # Create a cube into the middle layer. Visualize it's vertex normals instead of any other shading.
     show screen shaderScreen3d("cube", create3dCube, update3dCube, {}, shader.PS_3D_NORMALS, _layer="middle")
 
-    #Animate the whole cube layer.
+    # Animate the whole cube layer.
     show layer middle:
         default
         parallel:
@@ -426,7 +415,7 @@ label start:
     a "Or make someone else write them for you. The internet is full of interesting ones. The possibilities are endless."
     a "For example, check out this simple effect you can easily modify in the source file."
 
-    #Change the pixel shader
+    # Change the pixel shader
     $ show("amy", pixelShader=PS_COLOR_WAVE)
 
     a "Yee! I have always wanted to be cheerfully colored! Party hard!"
@@ -435,11 +424,11 @@ label start:
     a "So, that's about it for now. Bye!"
     a "Beam me up, Scotty!"
 
-    #Change the pixel shader
+    # Change the pixel shader
     $ show("amy", pixelShader=shader.PS_BEAM_FADE_2D)
 
-    #Note that Amy is still technically visible and rendered even thought you can't see her.
-    #In normal use it would be wise to hide() her soon to avoid wasting computing power.
+    # Note that Amy is still technically visible and rendered even thought you can't see her.
+    # In normal use it would be wise to hide() her soon to avoid wasting computing power.
 
     ":: The End ::"
 
