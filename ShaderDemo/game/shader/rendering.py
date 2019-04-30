@@ -1,13 +1,13 @@
+import ctypes
+import json
+import math
 
 import renpy
 import renpy.display
 import pygame_sdl2 as pygame
-import ctypes
 
 from OpenGL import GL as gl
 import euclid
-import math
-import json
 
 import shader
 import shadercode
@@ -15,6 +15,7 @@ import mesh
 import utils
 import skin
 import gpu
+
 
 class TextureEntry:
     def __init__(self, image, sampler):
@@ -33,6 +34,7 @@ class TextureEntry:
 
     def free(self):
         self.texture.free()
+
 
 class TextureMap:
     def __init__(self):
@@ -185,6 +187,7 @@ def createDefaultMatrices(width, height, context):
     projection = utils.createPerspective(60, width, height, 0.1, 100)
     return view, projection
 
+
 class ModelEntry:
     def __init__(self, mesh, matrix):
         self.mesh = mesh
@@ -194,6 +197,7 @@ class ModelEntry:
     def free(self):
         self.textureMap.free()
         self.textureMap = None
+
 
 class Renderer3D(BaseRenderer):
     def __init__(self):
@@ -279,6 +283,7 @@ class Renderer3D(BaseRenderer):
 
         self.shader.unbind()
 
+
 class BoneTransform:
     def __init__(self, bone, matrix, damping, transparency):
         self.bone = bone
@@ -286,10 +291,12 @@ class BoneTransform:
         self.damping = damping
         self.transparency = transparency
 
+
 class SkinnedFrameData:
     def __init__(self, time, transform):
         self.time = time
         self.transform = transform
+
 
 class SkinnedRenderer(BaseRenderer):
     BLACK_TEXTURE = "__black"

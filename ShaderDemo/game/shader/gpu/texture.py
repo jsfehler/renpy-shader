@@ -1,6 +1,7 @@
-
 import ctypes
+
 from OpenGL import GL as gl
+
 
 class Texture:
     def __init__(self, surface):

@@ -30,6 +30,7 @@ def orient2d(pa, pb, pc):
     det = detleft - detright
     return det
 
+
 def incircle(pa, pb, pc, pd):
     """Tests whether pd is in circle defined by the 3 points pa, pb and pc
     """
@@ -52,6 +53,7 @@ def incircle(pa, pb, pc, pd):
             blift * (cdxady - adxcdy) + \
             clift * (adxbdy - bdxady)
     return det
+
 
 # FIXME
 #
@@ -332,31 +334,38 @@ def box(points):
     ymax = max(points, key = lambda x: x[1])[1]
     return (xmin, ymin), (xmax, ymax)
 
+
 def ccw(i):
     """Get index (0, 1 or 2) increased with one (ccw)"""
     return (i + 1) % 3
+
 
 def cw(i):
     """Get index (0, 1 or 2) decreased with one (cw)"""
     return (i - 1) % 3
 
+
 def apex(side):
     """Given a side, give the apex of the triangle """
     return side % 3
+
 
 def orig(side):
     """Given a side, give the origin of the triangle """
     return (side + 1) % 3 # ccw(side)
 
+
 def dest(side):
     """Given a side, give the destination of the triangle """
     return (side - 1) % 3 # cw(side)
+
 
 def output_vertices(V, fh):
     """Output list of vertices as WKT to text file (for QGIS)"""
     fh.write("id;wkt\n")
     for v in V:
         fh.write("{0};POINT({1})\n".format(id(v), v))
+
 
 def output_triangles(T, fh):
     """Output list of triangles as WKT to text file (for QGIS)"""
@@ -945,6 +954,7 @@ class PointInserter(object):
         """Links triangle t0 to t1 for side0"""
         t0.neighbours[side0] = t1
 
+
 def check_consistency(triangles):
     """Check a list of triangles for consistent neighbouring relationships
 
@@ -1100,6 +1110,7 @@ def mark_cavity(P, Q, triangles):
         below.reverse()
     return above, below
 
+
 def straight_walk(P, Q):
     """Obtain the list of triangles that overlap
     the line segment that goes from Vertex P to Q.
@@ -1165,6 +1176,7 @@ def straight_walk(P, Q):
             raise TopologyViolationError("Unwanted vertex collision detected")
 
     return out
+
 
 def permute(a, b, c):
     """Permutation of the triangle vertex indices from lowest to highest,

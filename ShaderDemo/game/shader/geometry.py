@@ -1,7 +1,8 @@
-
-import polygonoffset
 import math
 import random
+
+import polygonoffset
+
 
 def simplifyEdgePixels(pixels, minDistance):
     results = []

@@ -1,16 +1,18 @@
-
 import ctypes
+
 from OpenGL import GL as gl
 
-#Possible compatibility defines for GLSL ES etc.
+# Possible compatibility defines for GLSL ES etc.
 DEFINES = """
 #define ATTRIBUTE attribute
 #define VARYING varying
 #define UNIFORM uniform
 """
 
+
 def wrapShaderCode(code):
     return DEFINES + "\n\n" + code
+
 
 class ShaderProgram:
     def __init__(self, vsCode, psCode):
@@ -58,17 +60,17 @@ class ShaderProgram:
         gl.glUseProgram(0)
 
     def uniformf(self, name, *values):
-        {1 : gl.glUniform1f,
-         2 : gl.glUniform2f,
-         3 : gl.glUniform3f,
-         4 : gl.glUniform4f
+        {1: gl.glUniform1f,
+         2: gl.glUniform2f,
+         3: gl.glUniform3f,
+         4: gl.glUniform4f
         }[len(values)](gl.glGetUniformLocation(self.handle, name), *values)
 
     def uniformi(self, name, *values):
-        {1 : gl.glUniform1i,
-         2 : gl.glUniform2i,
-         3 : gl.glUniform3i,
-         4 : gl.glUniform4i
+        {1: gl.glUniform1i,
+         2: gl.glUniform2i,
+         3: gl.glUniform3i,
+         4: gl.glUniform4i
         }[len(values)](gl.glGetUniformLocation(self.handle, name), *values)
 
     def uniformMatrix4f(self, name, matrix):

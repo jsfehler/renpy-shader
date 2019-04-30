@@ -1,5 +1,5 @@
-
 import json
+
 import pygame
 
 import euclid
@@ -8,6 +8,7 @@ import rigeditor
 import easing
 
 DEFAULT_EASING = "sineInOut"
+
 
 class KeyFrame:
     def __init__(self):
@@ -19,12 +20,14 @@ class KeyFrame:
         self.visible = None
         self.transparency = None
 
+
 def copyKeyData(source, target):
     target.translation = euclid.Vector3(source.translation.x, source.translation.y, source.translation.z)
     target.rotation = euclid.Vector3(source.rotation.x, source.rotation.y, source.rotation.z)
     target.scale = euclid.Vector3(source.scale.x, source.scale.y, source.scale.z)
     target.visible = source.visible
     target.transparency = source.transparency
+
 
 def interpolateKeyData(a, b, weight):
     key = KeyFrame()
@@ -34,6 +37,7 @@ def interpolateKeyData(a, b, weight):
     key.visible = a.visible
     key.transparency = utils.interpolate(a.transparency, b.transparency, weight)
     return key
+
 
 def mixKeys(keys, weights):
     result = KeyFrame()
@@ -51,6 +55,7 @@ def mixKeys(keys, weights):
         result.transparency = result.transparency + (key.transparency * weight)
     return result
 
+
 class Frame:
     def __init__(self):
         self.keys = {}
@@ -67,11 +72,13 @@ class Frame:
             self.keys[name] = key
         return key
 
+
 class BoneData:
     def __init__(self):
         self.repeat = False
         self.reversed = False
         self.easing = DEFAULT_EASING
+
 
 class SkinnedAnimation:
     jsonIgnore = ["dirty", "baked"]
@@ -365,6 +372,7 @@ def saveAnimationToFile(path, animation):
     }
     with open(path, "w") as f:
         json.dump(data, f, indent=1, cls=JsonEncoder, separators=(",", ": "), sort_keys=True)
+
 
 def loadAnimationFromFile(path):
     data = None

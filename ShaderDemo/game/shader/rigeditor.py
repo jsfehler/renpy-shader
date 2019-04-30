@@ -1,4 +1,3 @@
-
 import os
 import math
 import json
@@ -31,6 +30,7 @@ MODE = "mode"
 
 SAVE_DIR = "rig"
 
+
 def getSaveDir():
     target = os.path.join(renpy.config.gamedir, SAVE_DIR)
     try:
@@ -38,6 +38,7 @@ def getSaveDir():
     except:
         pass
     return target
+
 
 class Action:
     def start(self, editor):
@@ -57,6 +58,7 @@ class Action:
 
     def getMouseValue(self, mouse, pivot):
         return math.atan2(mouse[0] - pivot[0], mouse[1] - pivot[1])
+
 
 class TranslationEdit(Action):
     def __init__(self, editor, mouse, bone, attributes):
@@ -88,6 +90,7 @@ class TranslationEdit(Action):
         pivot = editor.getBonePivotTransformed(self.bone)
         editor.context.overlayCanvas.line("#0f0", (pivot.x, pivot.y), editor.mouse)
         editor.drawText("T(%s): %s" % (", ".join(axes), ", ".join(angles)), "#fff", (editor.mouse[0] + 20, editor.mouse[1]))
+
 
 class ScaleEdit(Action):
     def __init__(self, editor, mouse, bone, attributes):
@@ -158,6 +161,7 @@ class RotationEdit(Action):
         editor.context.overlayCanvas.line("#0f0", (self.pivot.x, self.pivot.y), editor.mouse)
         editor.drawText("R(%s): %s" % (", ".join(axes), ", ".join(angles)), "#fff", (editor.mouse[0] + 20, editor.mouse[1]))
 
+
 class TransparencyEdit(Action):
     def __init__(self, editor, mouse, bone):
         self.mouse = mouse
@@ -183,6 +187,7 @@ class TransparencyEdit(Action):
     def draw(self, editor):
         editor.context.overlayCanvas.line("#0f0", (self.pivot.x, self.pivot.y), editor.mouse)
         editor.drawText("Transparency: %i" % round(self.bone.transparency * 100.0), "#fff", (editor.mouse[0] + 20, editor.mouse[1]))
+
 
 class ExtrudeBone(Action):
     def __init__(self, editor, mouse, bone):
@@ -232,6 +237,7 @@ class ExtrudeBone(Action):
         editor.context.overlayCanvas.line(PIVOT_COLOR, (self.pivot.x, self.pivot.y), editor.mouse)
         editor.context.overlayCanvas.circle(PIVOT_COLOR, editor.mouse, PIVOT_SIZE)
 
+
 class ConnectBone(Action):
     def __init__(self, editor, mouse, bone):
         self.mouse = mouse
@@ -262,6 +268,7 @@ class ConnectBone(Action):
             color = (0, 255, 0)
         editor.context.overlayCanvas.line(color, (self.pivot.x, self.pivot.y), editor.mouse)
         editor.context.overlayCanvas.circle(color, editor.mouse, PIVOT_SIZE)
+
 
 class PoseMode:
     def __init__(self):

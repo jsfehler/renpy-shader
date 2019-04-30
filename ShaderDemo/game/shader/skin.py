@@ -1,6 +1,6 @@
-
 import ctypes
 import json
+
 from OpenGL import GL as gl
 
 import euclid
@@ -12,8 +12,10 @@ import utils
 VERSION = 1
 MAX_BONES = 64
 
+
 def makeArray(tp, values):
     return (tp * len(values))(*values)
+
 
 class SkinnedImage:
     jsonIgnore = []
@@ -26,6 +28,7 @@ class SkinnedImage:
         self.height = height
         self.originalWidth = originalWidth
         self.originalHeight = originalHeight
+
 
 class SkinningBone:
     jsonIgnore = ["wireFrame"]
@@ -84,7 +87,7 @@ class SkinningBone:
     def updatePoints(self, surface, pointSimplify):
         points = geometry.findEdgePixelsOrdered(surface)
         simplified = geometry.simplifyEdgePixels(points, pointSimplify)
-        self.points = geometry.offsetPolygon(simplified, -5) #TODO Increase this once better weighting is in?
+        self.points = geometry.offsetPolygon(simplified, -5)  #T ODO Increase this once better weighting is in?
 
     def triangulatePoints(self, gridResolution):
         points = self.points[:]
@@ -113,7 +116,7 @@ class SkinningBone:
         indices = []
         for tri in triangles:
             for v in tri:
-                #Consider vertices within one pixel identical
+                # Consider vertices within one pixel identical
                 v = (int(round(v[0])), int(round(v[1])))
                 if v in duplicates and MERGE_VERTICES:
                     indices.append(duplicates[v])
@@ -128,7 +131,9 @@ class SkinningBone:
 
         self.mesh = skinnedmesh.SkinnedMesh(verts, indices)
 
+
 JSON_IGNORES = []
+
 
 class JsonEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -144,6 +149,7 @@ class JsonEncoder(json.JSONEncoder):
             return list(obj)
         return json.JSONEncoder.default(self, obj)
 
+
 def saveToFile(context, bones, path):
     size = context.renderer.getSize()
     data = {
@@ -156,11 +162,13 @@ def saveToFile(context, bones, path):
     with open(path, "w") as f:
         json.dump(data, f, indent=1, cls=JsonEncoder, separators=(",", ": "), sort_keys=True)
 
+
 def _getArray(tp, obj, key):
     data = obj.get(key)
     if data:
         return makeArray(tp, data)
     return None
+
 
 def loadFromFile(path):
     data = None
@@ -178,8 +186,15 @@ def loadFromFile(path):
 
         image = raw.get("image")
         if image:
-            bone.image = SkinnedImage(image["name"], image["x"], image["y"],
-                image["width"], image["height"], image["originalWidth"], image["originalHeight"])
+            bone.image = SkinnedImage(
+                image["name"],
+                image["x"],
+                image["y"],
+                image["width"],
+                image["height"],
+                image["originalWidth"],
+                image["originalHeight"]
+            )
 
         bone.pos = raw["pos"]
         bone.pivot = raw["pivot"]

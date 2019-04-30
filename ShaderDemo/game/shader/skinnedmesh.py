@@ -1,14 +1,16 @@
-
 from OpenGL import GL as gl
 
 import geometry
 import utils
 
+
 def makeArray(tp, values):
     return (tp * len(values))(*values)
 
+
 def roundPoint(x, y):
     return (int(round(x)), int(round(y)))
+
 
 class SkinnedMesh:
     jsonIgnore = ["uvs"]
@@ -38,10 +40,10 @@ class SkinnedMesh:
             for i2, tri2 in enumerate(tris):
                 if i != i2:
                     for index in tri:
-                       if index in tri2:
-                           adj = adjacency.get(index, [])
-                           adj.append((tri2, i2))
-                           adjacency[index] = adj
+                        if index in tri2:
+                            adj = adjacency.get(index, [])
+                            adj.append((tri2, i2))
+                            adjacency[index] = adj
         return adjacency
 
     def getTriangleAdjacency(self, tris):
@@ -271,17 +273,20 @@ class SkinnedMesh:
         self.boneWeights = makeArray(gl.GLfloat, weights)
         self.boneIndices = makeArray(gl.GLfloat, indices)
 
+
 def findBoneImageBone(bone, bones):
     for parent in [bone] + bone.getParents(bones):
         if parent.image:
             return parent
     return None
 
+
 def blockerFunc(bone, results):
     if bone.blocker:
         results.add(bone.name)
         return False
     return True
+
 
 def findBlockerNames(meshBone, bones):
     blockers = set()
@@ -303,6 +308,7 @@ def findBlockerNames(meshBone, bones):
 
     return results
 
+
 class BoneWeight:
     def __init__(self, distance, index, transform):
         self.distance = distance
@@ -311,9 +317,11 @@ class BoneWeight:
         self.bone = transform.bone
         self.weight = 0.0
 
-#Shorten bones, otherwise their points can be at the same position which
-#can make weight calculation random and order-dependant.
+
+# Shorten bones, otherwise their points can be at the same position which
+# can make weight calculation random and order-dependant.
 SHORTEN_LINE = 0.95
+
 
 def findBoneInfluences(vertex, transforms, blockers):
     weights = []
@@ -329,6 +337,7 @@ def findBoneInfluences(vertex, transforms, blockers):
     weights.sort(key=lambda w: -w.weight)
     return weights[:4]
 
+
 def calculateWeight(vertex, a, b, bendyLength=0.75):
     minWeight = 0.0
     maxWeight = 0.1
@@ -339,6 +348,7 @@ def calculateWeight(vertex, a, b, bendyLength=0.75):
        return 0
     vertexDistance = min(distance / boneLength, 1.0)
     return utils.clamp(1 - vertexDistance, minWeight, maxWeight)
+
 
 def findNearestBone(vertex, transforms, blockers):
     nearest = None
@@ -358,10 +368,11 @@ def findNearestBone(vertex, transforms, blockers):
 
     return nearest
 
+
 def pointToBoneDistance(point, bone, transforms):
     return pointToShortenedLineDistance(point, bone.pivot, transforms[bone.parent].bone.pivot, SHORTEN_LINE)
+
 
 def pointToShortenedLineDistance(point, start, end, shorten):
     startShort, endShort = geometry.shortenLine(start, end, shorten)
     return geometry.pointToLineDistance(point, startShort, endShort)
-

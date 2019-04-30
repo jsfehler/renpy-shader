@@ -1,6 +1,6 @@
-
 import shader
 import utils
+
 
 def loadObj(filename):
     verts = []
@@ -59,4 +59,3 @@ class MeshObj(object):
         self.vertices = utils.makeFloatArray(verts, 3)
         self.normals = utils.makeFloatArray(normals, 3)
         self.uvs = utils.makeFloatArray(uvs, 2)
-

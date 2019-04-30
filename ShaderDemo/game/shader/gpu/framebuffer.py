@@ -1,5 +1,5 @@
-
 from OpenGL import GL as gl
+
 
 class FrameBuffer:
     def __init__(self, width, height, depth=False):
@@ -35,7 +35,7 @@ class FrameBuffer:
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, gl.GL_CLAMP_TO_EDGE)
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST)
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST)
-        #None means reserve texture memory, but texels are undefined
+        # None means reserve texture memory, but texels are undefined
         gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA8, width, height, 0, gl.GL_BGRA, gl.GL_UNSIGNED_BYTE, None)
         gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
         return textureId

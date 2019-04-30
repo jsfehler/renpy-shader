@@ -1,9 +1,10 @@
-
 import renpy
+
 from OpenGL import GL as gl
 
 import shader
 import gpu
+
 
 class RenderContext(object):
     def __init__(self, renderer, w, h, time, shownTime, animationTime, uniforms, mousePos, events, store, overlayRender):
@@ -72,8 +73,8 @@ class ControllerContextStore:
             try:
                 disp.visit_all(lambda x: displayables.append(x))
             except AttributeError:
-                #TODO child is sometimes None somewhere, we could do this manually...
-                #Could renpy.showing(name, layer) work here?
+                # TODO child is sometimes None somewhere, we could do this manually...
+                # Could renpy.showing(name, layer) work here?
                 pass
         return [d for d in displayables if isinstance(d, displayType)]
 
@@ -86,12 +87,12 @@ class ControllerContextStore:
         for tag, context in self.store.items():
             if context.delayFree:
                 if tag in tagged:
-                    #Went missing for one interaction, but now it is visible again.
+                    # Went missing for one interaction, but now it is visible again.
                     context.delayFree = False
                 else:
                     removal.append((tag, context))
             elif not tag in tagged and not context.persist:
-                #Not visible, free on next interaction
+                # Not visible, free on next interaction
                 context.delayFree = True
 
         for tag, context in removal:
@@ -101,7 +102,7 @@ class ControllerContextStore:
         shader.log("Controller count: %s" % len(self.store))
 
     def _clear(self):
-        #Usually there is no need to call this in normal use
+        # Usually there is no need to call this in normal use
         for tag, context in self.store.copy().items():
             context.freeController()
             self.removeContext(tag)
@@ -152,7 +153,7 @@ class RenderController(object):
 
         self.frameBuffer.unbind()
 
-        #TODO Restore blend state. Any other states that need restoring...?
+        # TODO Restore blend state. Any other states that need restoring...?
         gl.glBlendFunc(gl.GL_ONE, gl.GL_ONE_MINUS_SRC_ALPHA)
 
     def copyRenderBufferToSurface(self, surface):
