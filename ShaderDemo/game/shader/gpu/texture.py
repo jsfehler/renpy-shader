@@ -17,19 +17,17 @@ class Texture:
         self.height = surface.get_height()
         self.textureId = 0
 
-        textureId = (gl.GLuint * 1)()
-
         surface.lock()
 
         BYTEP = ctypes.POINTER(ctypes.c_ubyte)
         ptr = ctypes.cast(surface._pixels_address, BYTEP)
 
-        gl.glGenTextures(1, textureId)
+        textureId = gl.glGenTextures(1, gl.GLuint * 1)
         gl.glEnable(gl.GL_TEXTURE_2D)
         gl.glActiveTexture(gl.GL_TEXTURE0)
 
         gl.glPixelStorei(gl.GL_UNPACK_ROW_LENGTH, surface.get_pitch() // surface.get_bytesize())
-        gl.glBindTexture(gl.GL_TEXTURE_2D, textureId[0])
+        gl.glBindTexture(gl.GL_TEXTURE_2D, textureId)
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, gl.GL_CLAMP_TO_EDGE)
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, gl.GL_CLAMP_TO_EDGE)
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
@@ -40,11 +38,11 @@ class Texture:
 
         surface.unlock()
 
-        self.textureId = textureId[0]
+        self.textureId = textureId
 
     def free(self):
         if self.textureId:
-            gl.glDeleteTextures(1, self.textureId)
+            gl.glDeleteTextures(self.textureId)
             self.textureId = 0
 
     def valid(self):

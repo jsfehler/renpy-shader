@@ -19,7 +19,7 @@ class FrameBuffer:
 
     def free(self):
         if self.texture:
-            gl.glDeleteTextures(1, self.texture)
+            gl.glDeleteTextures(self.texture)
             self.texture = 0
         if self.depthBuffer:
             gl.glDeleteRenderbuffers(1, self.depthBuffer)
@@ -29,9 +29,8 @@ class FrameBuffer:
             self.buffer = 0
 
     def createEmptyTexture(self, width, height):
-        textureId = (gl.GLuint * 1)()
-        gl.glGenTextures(1, textureId)
-        gl.glBindTexture(gl.GL_TEXTURE_2D, textureId[0])
+        textureId = gl.glGenTextures(1, gl.GLuint * 1)
+        gl.glBindTexture(gl.GL_TEXTURE_2D, textureId)
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, gl.GL_CLAMP_TO_EDGE)
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, gl.GL_CLAMP_TO_EDGE)
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST)
@@ -39,7 +38,7 @@ class FrameBuffer:
         #None means reserve texture memory, but texels are undefined
         gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA8, width, height, 0, gl.GL_BGRA, gl.GL_UNSIGNED_BYTE, None)
         gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
-        return textureId[0]
+        return textureId
 
     def createDepthBuffer(self, width, height):
         textureId = (gl.GLuint * 1)()
