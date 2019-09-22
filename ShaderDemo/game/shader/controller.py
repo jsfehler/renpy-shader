@@ -26,7 +26,11 @@ class RenderContext(object):
         if self.overlayCanvas is not None:
             return
         self.overlayCanvas = self.overlayRender.canvas()
-        self.overlayCanvas.rect("#f00", (0, 0, self.width - 1, self.height - 1), 1)
+        self.overlayCanvas.rect(
+            "#f00",
+            (0, 0, self.width - 1, self.height - 1),
+            1,
+        )
 
 
 class ControllerContext:
@@ -59,7 +63,7 @@ class ControllerContextStore:
             context = ControllerContext()
             self.store[tag] = context
 
-        #context.delayFree = False #Not really needed...
+        # context.delayFree = False #Not really needed...
 
         return context
 
@@ -91,7 +95,7 @@ class ControllerContextStore:
                     context.delayFree = False
                 else:
                     removal.append((tag, context))
-            elif not tag in tagged and not context.persist:
+            elif tag not in tagged and not context.persist:
                 # Not visible, free on next interaction
                 context.delayFree = True
 
