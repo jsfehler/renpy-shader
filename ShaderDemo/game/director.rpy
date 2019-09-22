@@ -41,14 +41,14 @@ init python:
         active = findLayer(image, layer)
         hide(image, layer=active)
 
-        renpy.show_screen("rigScreen", image, shader.PS_SKINNED,
+        renpy.show_screen("rigScreen", image, PS_SKINNED,
             update=update, args={"rigFile": path}, xalign=xalign, yalign=yalign,
             _tag=getImageBase(image), _layer=active)
         renpy.show_layer_at([], layer=active)  # Stop any animations
         return CallChain
 
 
-    def show(image, pixelShader=shader.PS_WIND_2D, uniforms={}, update=None, xalign=0.5, yalign=0.1, layer=None, textures=None):
+    def show(image, pixelShader=PS_WIND_2D, uniforms={}, update=None, xalign=0.5, yalign=0.1, layer=None, textures=None):
         # TODO use **kwargs and pass them to show_screen...
         active = findLayer(image, layer)
 

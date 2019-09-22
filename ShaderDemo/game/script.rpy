@@ -17,26 +17,8 @@ init python:
     import shader
 
     if config.developer:
-        #Can help in debugging
+        # Can help in debugging
         renpy.display.log.flush = True
-
-    #A simple, custom pixel shader. Feel free to edit this and
-    #see what changes. Also check out the shaders bundled with this library if you want to.
-    PS_COLOR_WAVE = """
-        VARYING vec2 varUv; //Texture coordinates
-
-        UNIFORM sampler2D tex0; //Texture bound to slot 0
-        UNIFORM float shownTime; //RenPy provided displayable time
-
-        void main()
-        {
-            vec4 color = texture2D(tex0, varUv);
-            float red = color.r * ((sin(shownTime) + 1.0) / 2.0);
-            float green = color.g * ((sin(shownTime + 2.0) + 1.0) / 2.0);
-            float blue = color.b * ((sin(shownTime + 4.0) + 1.0) / 2.0);
-            gl_FragColor = vec4(red, green, blue, color.a);
-        }
-    """
 
     #Callback functions for creating and updating shader screens.
     #You should be very careful when modifying any global game state from
@@ -44,7 +26,10 @@ init python:
     #Reading variables etc. is usually fine.
 
     def interpolate2d(a, b, value):
-        return (shader.utils.interpolate(a[0], float(b[0]), value), shader.utils.interpolate(a[1], float(b[1]), value))
+        return (
+            shader.utils.interpolate(a[0], float(b[0]), value),
+            shader.utils.interpolate(a[1], float(b[1]), value),
+        )
 
     #Scale eye and mouth targets from -1 to 1 to a relative pixel range. There is no
     #hard science about how much you should scale them, use what looks good.
@@ -169,7 +154,7 @@ label start:
 
     #... just uses some helper functions to make things more readable.
     #That call does roughly the same as this:
-        #show screen shaderScreen("amy", shader.PS_WIND_2D, {"tex1": "amy influence"}, _tag="amy", _layer="amy")
+        #show screen shaderScreen("amy", PS_WIND_2D, {"tex1": "amy influence"}, _tag="amy", _layer="amy")
         #with dissolve
 
     # One thing to keep in mind is that show() and other Python calls will
@@ -323,7 +308,7 @@ label start:
 
     # Show this screen in "bottom"-layer so it will always below other sprites.
     hide room
-    $ show("room", pixelShader=shader.PS_BLUR_2D, update=animateBlurSize, layer="bottom")
+    $ show("room", pixelShader=PS_BLUR_2D, update=animateBlurSize, layer="bottom")
 
     a "The blur effect should now be affecting the background image. Notice how the blur strength is animated."
     a "Now the background is being blurred and I'm still being affected by the wind effect."
@@ -395,7 +380,7 @@ label start:
     a "We can also render 3D-objects into the scene between layers. Like this!"
 
     # Create a cube into the middle layer. Visualize it's vertex normals instead of any other shading.
-    show screen shaderScreen3d("cube", create3dCube, update3dCube, {}, shader.PS_3D_NORMALS, _layer="middle")
+    show screen shaderScreen3d("cube", create3dCube, update3dCube, {}, PS_3D_NORMALS, _layer="middle")
 
     # Animate the whole cube layer.
     show layer middle:
@@ -425,7 +410,7 @@ label start:
     a "Beam me up, Scotty!"
 
     # Change the pixel shader
-    $ show("amy", pixelShader=shader.PS_BEAM_FADE_2D)
+    $ show("amy", pixelShader=PS_BEAM_FADE_2D)
 
     # Note that Amy is still technically visible and rendered even thought you can't see her.
     # In normal use it would be wise to hide() her soon to avoid wasting computing power.

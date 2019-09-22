@@ -85,7 +85,7 @@ init python:
 
 #The screen for showing rigged images. It is usually best to use the rig() function which will show this.
 screen rigScreen(name, pixelShader, textures={}, uniforms={}, update=None, args=None, xalign=0.5, yalign=1.0):
-    add ShaderDisplayable(shader.MODE_SKINNED, name, shader.VS_SKINNED, pixelShader, textures, uniforms, None, update, args):
+    add ShaderDisplayable(shader.MODE_SKINNED, name, VS_SKINNED, pixelShader, textures, uniforms, None, update, args):
         xalign xalign
         yalign yalign
 
